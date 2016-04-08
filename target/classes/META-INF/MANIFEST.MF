@@ -1,0 +1,33 @@
+Manifest-Version: 1.0
+Export-Package: org.apache.commons.dbutils;version="1.6",org.apache.co
+ mmons.dbutils.handlers;version="1.6",org.apache.commons.dbutils.wrapp
+ ers;version="1.6"
+Implementation-Title: Apache Commons DbUtils
+Built-By: britter
+Tool: Bnd-2.1.0.20130426-122213
+Implementation-Vendor: The Apache Software Foundation
+Implementation-Vendor-Id: org.apache
+Specification-Title: Apache Commons DbUtils
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Bundle-SymbolicName: org.apache.commons.dbutils
+X-Compile-Target-JDK: 1.6
+Implementation-Version: 1.6
+Specification-Vendor: The Apache Software Foundation
+Bundle-Name: Apache Commons DbUtils
+Created-By: Apache Maven Bundle Plugin
+X-Compile-Source-JDK: 1.6
+Bundle-Vendor: The Apache Software Foundation
+Build-Jdk: 1.7.0_60
+Bundle-Version: 1.6.0
+Bnd-LastModified: 1405538584171
+Bundle-ManifestVersion: 2
+Bundle-Description: The Apache Commons DbUtils package is a set of  Ja
+ va utility classes for easing JDBC development.
+Bundle-DocURL: http://commons.apache.org/proper/commons-dbutils/
+Import-Package: javax.sql
+Include-Resource: META-INF/LICENSE.txt=LICENSE.txt,META-INF/NOTICE.txt
+ =NOTICE.txt
+Specification-Version: 1.6
+Implementation-Build: UNKNOWN_BRANCH@r??????; 2014-07-16 19:23:00+0000
+Archiver-Version: Plexus Archiver
+

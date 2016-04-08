@@ -1,0 +1,8 @@
+com\MainApp.class
+com\model\partyModel.class
+com\util\AlertDialog.class
+com\util\Global.class
+com\sql\DBConnection.class
+com\util\DBCInfo.class
+com\sceneControllers\MainWindowSceneController.class
+com\model\salutationModel.class
