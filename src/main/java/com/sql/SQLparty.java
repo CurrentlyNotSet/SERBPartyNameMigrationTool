@@ -6,12 +6,14 @@
 package com.sql;
 
 import com.model.partyModel;
+import com.model.partyNameTableModel;
+import com.util.StringUtilities;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import org.apache.commons.dbutils.DbUtils;
 
 /**
@@ -20,8 +22,8 @@ import org.apache.commons.dbutils.DbUtils;
  */
 public class SQLparty {
     
-    public static List getContactList(String startsWith){
-        List<partyModel> list = new ArrayList<>();
+    public static ObservableList<partyNameTableModel> getContactList(String startsWith){
+        ObservableList<partyNameTableModel> list = FXCollections.observableArrayList();
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -31,15 +33,23 @@ public class SQLparty {
                     + "FROM Party WHERE lastName LIKE ?";
             ps = conn.prepareStatement(sql);
             ps.setString(1, startsWith);
-            rs = ps.executeQuery();           
-            
-            while(rs.next()) {
-               partyModel item = new partyModel();
-               item.setPartyID(rs.getInt("id"));
-               item.setFirstName(rs.getString("firstName"));
-               item.setMiddleInitial(rs.getString("middleInitial"));
-               item.setLastName(rs.getString("lastName"));
-               list.add(item);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                
+                partyModel name = new partyModel();
+                name.setPrefix("");
+                name.setFirstName(rs.getString("firstName"));
+                name.setMiddleInitial(rs.getString("middleInitial"));
+                name.setLastName(rs.getString("lastName"));
+                name.setSuffix("");
+                
+                
+                
+                list.add(new partyNameTableModel(
+                        rs.getString("id"),
+                        StringUtilities.fullName(name)
+                ));
            }  
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -58,27 +68,29 @@ public class SQLparty {
         ResultSet rs = null;
         try {
             conn = DBConnection.connectToDB();
-            String sql = "SELECT * FROM party WHERE partyID = ?";
-            ps = conn.prepareStatement(sql);
+            String sql = "SELECT * FROM party WHERE id = ?";
+            ps = conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             ps.setInt(1, partyID);
             rs = ps.executeQuery();
             if(rs.first()){
-                item.setPartyID(rs.getInt(""));
-                item.setPrefixID(rs.getInt(""));
-                item.setPrefix(rs.getString(""));
-                item.setFirstName(rs.getString(""));
-                item.setMiddleInitial(rs.getString(""));
-                item.setLastName(rs.getString(""));
-                item.setSuffix(rs.getString(""));
-                item.setNameTitle(rs.getString(""));
-                item.setJobTitle(rs.getString(""));
-                item.setCompanyName(rs.getString(""));
-                item.setAddress1(rs.getString(""));
-                item.setAddress2(rs.getString(""));
-                item.setAddress3(rs.getString(""));
-                item.setCity(rs.getString(""));
-                item.setState(rs.getString(""));
-                item.setZip(rs.getString(""));
+                item.setPartyID(rs.getInt("id"));
+                item.setPrefix(rs.getString("prefix"));
+                item.setFirstName(rs.getString("firstName"));
+                item.setMiddleInitial(rs.getString("middleInitial"));
+                item.setLastName(rs.getString("lastName"));
+                item.setSuffix(rs.getString("suffix"));
+                item.setNameTitle(rs.getString("nameTitle"));
+                item.setJobTitle(rs.getString("jobTitle"));
+                item.setCompanyName(rs.getString("companyName"));
+                item.setAddress1(rs.getString("address1"));
+                item.setAddress2(rs.getString("address2"));
+                item.setAddress3(rs.getString("address3"));
+                item.setCity(rs.getString("city"));
+                item.setState(rs.getString("stateCode"));
+                item.setZip(rs.getString("zipcode"));
+                item.setPhoneOne(rs.getString("phone1"));
+                item.setPhoneTwo(rs.getString("phone2"));
+                item.setEmailAddress(rs.getString("emailAddress"));
             } else {
                 item = null;
             }
@@ -111,7 +123,7 @@ public class SQLparty {
                     + "Address1 = ?, "      //10
                     + "Address2 = ?, "      //11
                     + "Address3 = ?, "      //12
-                    + "WHERE partyID = ?";  //13
+                    + "WHERE id = ?";  //13
             ps = conn.prepareStatement(sql);
             ps.setInt   ( 1, item.getPrefixID());
             ps.setString( 2, item.getFirstName());

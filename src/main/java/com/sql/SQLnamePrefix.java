@@ -5,8 +5,6 @@
  */
 package com.sql;
 
-import com.model.partyModel;
-import com.model.salutationModel;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,24 +17,21 @@ import org.apache.commons.dbutils.DbUtils;
  *
  * @author Andrew
  */
-public class SQLsalutation {
+public class SQLnamePrefix {
     
     public static List getSalutationList(){
-        List<salutationModel> list = new ArrayList<>();
+        List<String> list = new ArrayList<>();
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
             conn = DBConnection.connectToDB();
-            String sql = "";
+            String sql = "SELECT prefix FROM namePrefix WHERE active = 1";
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();           
-            
+            list.add("");
             while(rs.next()) {
-               salutationModel item = new salutationModel();
-               item.setSalutationID(rs.getInt(""));
-               item.setSalutationName(rs.getString(""));
-               list.add(item);
+               list.add(rs.getString("prefix"));
            }  
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -47,4 +42,5 @@ public class SQLsalutation {
         }
         return list;
     }
+    
 }

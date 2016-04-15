@@ -20,17 +20,7 @@
               <menus>
                 <Menu mnemonicParsing="false" text="File">
                   <items>
-                    <MenuItem mnemonicParsing="false" text="Close" />
-                  </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Edit">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="Delete" />
-                  </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Help">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="About" />
+                    <MenuItem mnemonicParsing="false" onAction="#MenuExit" text="Close" />
                   </items>
                 </Menu>
               </menus>
@@ -39,10 +29,10 @@
          <left>
             <BorderPane prefHeight="640.0" prefWidth="262.0" BorderPane.alignment="CENTER">
                <center>
-                  <TableView prefHeight="562.0" prefWidth="242.0" BorderPane.alignment="CENTER">
+                  <TableView fx:id="searchTable" onMouseClicked="#tableListener" prefHeight="562.0" prefWidth="242.0" BorderPane.alignment="CENTER">
                     <columns>
-                      <TableColumn prefWidth="50.0" text="ID" visible="false" />
-                      <TableColumn prefWidth="241.0" text="Name" />
+                      <TableColumn fx:id="iDColumn" prefWidth="50.0" text="ID" visible="false" />
+                      <TableColumn fx:id="nameColumn" prefWidth="241.0" text="Name" />
                     </columns>
                      <BorderPane.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" />
@@ -66,7 +56,7 @@
                                     <Insets left="15.0" />
                                  </GridPane.margin>
                               </Label>
-                              <ComboBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                              <ComboBox fx:id="startsWithComboBox" onAction="#search" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                  <GridPane.margin>
                                     <Insets right="15.0" />
                                  </GridPane.margin>
@@ -155,26 +145,26 @@
                                  <GridPane.margin>
                                     <Insets right="10.0" />
                                  </GridPane.margin></Label>
-                              <TextField prefHeight="25.0" prefWidth="383.0" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.rowIndex="1" />
-                              <TextField GridPane.columnIndex="1" GridPane.columnSpan="7" GridPane.rowIndex="2" />
-                              <TextField GridPane.columnIndex="1" GridPane.columnSpan="7" GridPane.rowIndex="3" />
-                              <TextField GridPane.columnIndex="1" GridPane.columnSpan="7" GridPane.rowIndex="6" />
-                              <TextField GridPane.columnIndex="1" GridPane.columnSpan="7" GridPane.rowIndex="7" />
-                              <TextField GridPane.columnIndex="1" GridPane.columnSpan="7" GridPane.rowIndex="8" />
-                              <TextField GridPane.columnIndex="1" GridPane.columnSpan="7" GridPane.rowIndex="9" />
-                              <TextField GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="10" />
-                              <ComboBox prefHeight="25.0" prefWidth="534.0" GridPane.columnIndex="1" />
+                              <TextField fx:id="lastNameTextBox" prefHeight="25.0" prefWidth="383.0" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.rowIndex="1" />
+                              <TextField fx:id="nameTitleTextBox" GridPane.columnIndex="1" GridPane.columnSpan="7" GridPane.rowIndex="2" />
+                              <TextField fx:id="jobTitleTextBox" GridPane.columnIndex="1" GridPane.columnSpan="7" GridPane.rowIndex="3" />
+                              <TextField fx:id="companyTextBox" GridPane.columnIndex="1" GridPane.columnSpan="7" GridPane.rowIndex="6" />
+                              <TextField fx:id="address1TextBox" GridPane.columnIndex="1" GridPane.columnSpan="7" GridPane.rowIndex="7" />
+                              <TextField fx:id="address2TextBox" GridPane.columnIndex="1" GridPane.columnSpan="7" GridPane.rowIndex="8" />
+                              <TextField fx:id="address3TextBox" GridPane.columnIndex="1" GridPane.columnSpan="7" GridPane.rowIndex="9" />
+                              <TextField fx:id="cityTextBox" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="10" />
+                              <ComboBox fx:id="prefixComboBox" prefHeight="25.0" prefWidth="534.0" GridPane.columnIndex="1" />
                               <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="152.0" text="First:" GridPane.columnIndex="2">
                                  <GridPane.margin>
                                     <Insets right="10.0" />
                                  </GridPane.margin></Label>
-                              <TextField GridPane.columnIndex="3" GridPane.columnSpan="3" />
+                              <TextField fx:id="firstNameTextBox" GridPane.columnIndex="3" GridPane.columnSpan="3" />
                               <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="State:" GridPane.columnIndex="4" GridPane.rowIndex="10">
                                  <GridPane.margin>
                                     <Insets right="10.0" />
                                  </GridPane.margin>
                               </Label>
-                              <ComboBox prefHeight="25.0" prefWidth="75.0" GridPane.columnIndex="5" GridPane.rowIndex="10" />
+                              <ComboBox fx:id="statesComboBox" prefHeight="25.0" prefWidth="75.0" GridPane.columnIndex="5" GridPane.rowIndex="10" />
                               <Label alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="MI:" GridPane.columnIndex="6">
                                  <GridPane.margin>
                                     <Insets right="10.0" />
@@ -190,10 +180,10 @@
                                     <Insets right="10.0" />
                                  </GridPane.margin>
                               </Label>
-                              <TextField GridPane.columnIndex="7" />
-                              <TextField GridPane.columnIndex="7" GridPane.rowIndex="1" />
-                              <TextField GridPane.columnIndex="7" GridPane.rowIndex="10" />
-                              <CheckBox maxHeight="1.7976931348623157E308" maxWidth="-Infinity" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" prefHeight="17.0" prefWidth="293.0" text="Employer/Organization/Union" GridPane.columnIndex="5" GridPane.columnSpan="3" GridPane.rowIndex="5" />
+                              <TextField fx:id="miTextBox" GridPane.columnIndex="7" />
+                              <TextField fx:id="suffixTextBox" GridPane.columnIndex="7" GridPane.rowIndex="1" />
+                              <TextField fx:id="zipCodeTextBox" GridPane.columnIndex="7" GridPane.rowIndex="10" />
+                              <CheckBox fx:id="orgCheckBox" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" prefHeight="17.0" prefWidth="293.0" text="Employer/Organization/Union" GridPane.columnIndex="5" GridPane.columnSpan="3" GridPane.rowIndex="5" />
                               <Label alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Phone 1:" GridPane.rowIndex="12">
                                  <GridPane.margin>
                                     <Insets right="10.0" />
@@ -209,9 +199,9 @@
                                     <Insets right="10.0" />
                                  </GridPane.margin>
                               </Label>
-                              <TextField maxWidth="170.0" minWidth="170.0" prefWidth="170.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="12" />
-                              <TextField maxWidth="170.0" minWidth="170.0" prefWidth="170.0" GridPane.columnIndex="5" GridPane.columnSpan="3" GridPane.rowIndex="12" />
-                              <TextField GridPane.columnIndex="1" GridPane.columnSpan="7" GridPane.rowIndex="13" />
+                              <TextField fx:id="phone1TextBox" maxWidth="170.0" minWidth="170.0" prefWidth="170.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="12" />
+                              <TextField fx:id="phone2TextBox" maxWidth="170.0" minWidth="170.0" prefWidth="170.0" GridPane.columnIndex="5" GridPane.columnSpan="3" GridPane.rowIndex="12" />
+                              <TextField fx:id="emailTextBox" GridPane.columnIndex="1" GridPane.columnSpan="7" GridPane.rowIndex="13" />
                            </children>
                            <BorderPane.margin>
                               <Insets left="15.0" right="15.0" />
@@ -228,8 +218,8 @@
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <Button maxWidth="100.0" minWidth="100.0" mnemonicParsing="false" prefWidth="100.0" text="Save" GridPane.valignment="BOTTOM" />
-                              <Button maxWidth="100.0" minWidth="100.0" mnemonicParsing="false" prefWidth="100.0" text="Cancel" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM" />
+                              <Button fx:id="saveButton" maxWidth="100.0" minWidth="100.0" mnemonicParsing="false" prefWidth="100.0" text="Save" GridPane.valignment="BOTTOM" />
+                              <Button fx:id="cancelButton" maxWidth="100.0" minWidth="100.0" mnemonicParsing="false" prefWidth="100.0" text="Cancel" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM" />
                            </children>
                            <BorderPane.margin>
                               <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />

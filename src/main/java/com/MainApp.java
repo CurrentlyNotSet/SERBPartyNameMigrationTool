@@ -1,5 +1,6 @@
 package com;
 
+import com.sceneControllers.MainWindowSceneController;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
@@ -12,7 +13,11 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainWindowScene.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/MainWindowScene.fxml"));
+        Parent root = (Parent) fxmlLoader.load();
+        MainWindowSceneController controller = fxmlLoader.<MainWindowSceneController>getController();
+        controller.setDefaults();
+
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setResizable(false);
