@@ -12,7 +12,6 @@ package com.model;
 public class partyModel {
     
     private int partyID;
-    private int prefixID;
     private String prefix;
     private String firstName;
     private String middleInitial;
@@ -38,14 +37,6 @@ public class partyModel {
 
     public void setPartyID(int partyID) {
         this.partyID = partyID;
-    }
-
-    public int getPrefixID() {
-        return prefixID;
-    }
-
-    public void setPrefixID(int prefixID) {
-        this.prefixID = prefixID;
     }
 
     public String getPrefix() {

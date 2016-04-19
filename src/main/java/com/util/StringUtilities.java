@@ -15,27 +15,32 @@ public class StringUtilities {
     
     public static String fullName(partyModel item) {
         String name = "";
+        name += ((item.getPrefix() == null || "".equals(item.getPrefix())) 
+                ? "" : item.getPrefix() + " ");
+        name += ((item.getFirstName()== null || "".equals(item.getFirstName())) 
+                ? "" : item.getFirstName() + " ");
+        name += ((item.getMiddleInitial() == null || "".equals(item.getMiddleInitial())) 
+                ? "" : item.getMiddleInitial() +  ". ");
+        name += ((item.getLastName() == null) 
+                ? "" : item.getLastName());
+        name += ((item.getSuffix() == null || "".equals(item.getSuffix())) 
+                ? "" : " " + item.getSuffix());
         
-        name += item.getPrefix();
-        if (!"".equals(item.getPrefix())){
-            name += " ";
-        }
-        name += item.getFirstName();
-        if (!"".equals(item.getFirstName())){
-            name += " ";
-        }
-        name += item.getMiddleInitial();
-        if (!"".equals(item.getMiddleInitial())) {
-            name += ". ";
-        }
-        name += item.getLastName();
-
-        if (!"".equals(item.getSuffix())) {
-            if (!"".equals(name.trim())) {
-                name += " ";
-            }
-            name += item.getSuffix();
-        }
-        return name;
+        return name.trim();
     }
+    
+    public static String convertStringToPhoneNumber(String number) {
+        String formattedNumber = "";
+        if (number.length() >= 6){
+            formattedNumber += "(" + number.substring(0, 3) + ") ";
+            formattedNumber += number.substring(3, 6) + "-";
+            formattedNumber += number.substring(6);
+        }
+        return formattedNumber;
+    }
+    
+    public static String convertPhoneNumberToString(String number) {
+        return number.replaceAll("[^0-9]", "");
+    }
+    
 }

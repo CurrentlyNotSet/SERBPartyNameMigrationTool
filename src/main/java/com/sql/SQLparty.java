@@ -29,22 +29,21 @@ public class SQLparty {
         ResultSet rs = null;
         try {
             conn = DBConnection.connectToDB();
-            String sql = "SELECT id, firstName, middleInitial, lastName "
-                    + "FROM Party WHERE lastName LIKE ?";
+            String sql = "SELECT id, prefix, firstName, middleInitial, lastName, suffix "
+                    + "FROM Party WHERE "
+                    + "(firstName = '' OR firstName IS NULL) AND "
+                    + "(middleInitial = '' OR middleInitial IS NULL) AND "
+                    + "lastName LIKE ?";
             ps = conn.prepareStatement(sql);
             ps.setString(1, startsWith);
             rs = ps.executeQuery();
-
             while (rs.next()) {
-                
                 partyModel name = new partyModel();
-                name.setPrefix("");
+                name.setPrefix(rs.getString("prefix"));
                 name.setFirstName(rs.getString("firstName"));
                 name.setMiddleInitial(rs.getString("middleInitial"));
                 name.setLastName(rs.getString("lastName"));
-                name.setSuffix("");
-                
-                
+                name.setSuffix(rs.getString("suffix"));
                 
                 list.add(new partyNameTableModel(
                         rs.getString("id"),
@@ -110,7 +109,7 @@ public class SQLparty {
         ResultSet rs = null;
         try {
             conn = DBConnection.connectToDB();
-            String sql = "UPDATE parties SET "
+            String sql = "UPDATE party SET "
                     + "Prefix = ?, "        //01
                     + "FirstName = ?, "     //02
                     + "MiddleInitial = ?, " //03
@@ -118,26 +117,30 @@ public class SQLparty {
                     + "Suffix = ?, "        //05
                     + "NameTitle = ?, "     //06
                     + "JobTitle = ?, "      //07
-                    + "CompanyFlag = ?, "   //08
-                    + "CompanyName = ?, "   //09
-                    + "Address1 = ?, "      //10
-                    + "Address2 = ?, "      //11
-                    + "Address3 = ?, "      //12
-                    + "WHERE id = ?";  //13
+                    + "CompanyName = ?, "   //08
+                    + "Address1 = ?, "      //09
+                    + "Address2 = ?, "      //10
+                    + "Address3 = ?, "      //11
+                    + "phone1 = ?, "        //12
+                    + "phone2 = ?, "        //13
+                    + "emailAddress = ?  "  //14
+                    + "WHERE id = ?";       //15
             ps = conn.prepareStatement(sql);
-            ps.setInt   ( 1, item.getPrefixID());
+            ps.setString( 1, item.getPrefix());
             ps.setString( 2, item.getFirstName());
             ps.setString( 3, item.getMiddleInitial());
             ps.setString( 4, item.getLastName());
             ps.setString( 5, item.getSuffix());
             ps.setString( 6, item.getNameTitle());
             ps.setString( 7, item.getJobTitle());
-            ps.setInt   ( 8, item.getCompanyFlag());
-            ps.setString( 9, item.getCompanyName());
-            ps.setString(10, item.getAddress1());
-            ps.setString(11, item.getAddress2());
-            ps.setString(12, item.getAddress3());
-            ps.setInt   (13, item.getPartyID());
+            ps.setString( 8, item.getCompanyName());
+            ps.setString( 9, item.getAddress1());
+            ps.setString(10, item.getAddress2());
+            ps.setString(11, item.getAddress3());
+            ps.setString(12, item.getPhoneOne());
+            ps.setString(13, item.getPhoneTwo());
+            ps.setString(14, item.getEmailAddress());
+            ps.setInt   (15, item.getPartyID());
             ps.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();

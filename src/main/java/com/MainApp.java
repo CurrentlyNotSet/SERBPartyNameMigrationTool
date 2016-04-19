@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 
 public class MainApp extends Application {
@@ -16,11 +17,12 @@ public class MainApp extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/MainWindowScene.fxml"));
         Parent root = (Parent) fxmlLoader.load();
         MainWindowSceneController controller = fxmlLoader.<MainWindowSceneController>getController();
-        controller.setDefaults();
+        controller.setDefaults(stage);
 
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setResizable(false);
+        stage.initStyle(StageStyle.UNDECORATED);
         stage.show();
     }
 

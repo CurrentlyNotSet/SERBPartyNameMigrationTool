@@ -10,18 +10,19 @@ import com.model.partyNameTableModel;
 import com.sql.SQLnamePrefix;
 import com.sql.SQLparty;
 import com.util.Global;
+import com.util.StringUtilities;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -30,6 +31,10 @@ import javafx.scene.input.MouseEvent;
  */
 public class MainWindowSceneController implements Initializable {
 
+    Stage mainstage;
+    private double X, Y;
+    private int partyID;
+    
     @FXML
     private ComboBox<String> startsWithComboBox;
     @FXML
@@ -46,8 +51,6 @@ public class MainWindowSceneController implements Initializable {
     private TextField nameTitleTextBox;
     @FXML
     private TextField jobTitleTextBox;
-    @FXML
-    private CheckBox orgCheckBox;
     @FXML
     private TextField companyTextBox;
     @FXML
@@ -78,9 +81,16 @@ public class MainWindowSceneController implements Initializable {
     private TableColumn<partyNameTableModel, String> iDColumn;
     @FXML
     private TableColumn<partyNameTableModel, String> nameColumn;
-    
-    
-    private int partyID;
+    @FXML
+    protected void onRectanglePressed(MouseEvent event) {
+        X = mainstage.getX() - event.getScreenX();
+        Y = mainstage.getY() - event.getScreenY();
+    }
+    @FXML
+    protected void onRectangleDragged(MouseEvent event) {
+        mainstage.setX(event.getScreenX() + X);
+        mainstage.setY(event.getScreenY() + Y);
+    }
     
     /**
      * Initializes the controller class.
@@ -89,11 +99,28 @@ public class MainWindowSceneController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        iDColumn.setCellValueFactory(cellData -> cellData.getValue().getID());
-        nameColumn.setCellValueFactory(cellData -> cellData.getValue().getPartyName());
+        setTableProps();
+        setListeners();
     }    
     
-    public void setDefaults(){
+    private void setTableProps() {
+        iDColumn.setCellValueFactory(cellData -> cellData.getValue().getID());
+        nameColumn.setCellValueFactory(cellData -> cellData.getValue().getPartyName());
+    }
+    
+    private void setListeners() {
+        saveButton.disableProperty().bind(
+                (firstNameTextBox.textProperty().isEmpty())
+                .or(lastNameTextBox.textProperty().isEmpty())
+                .or(address1TextBox.textProperty().isEmpty())
+                .or(cityTextBox.textProperty().isEmpty())
+                .or(statesComboBox.valueProperty().isNull())
+                .or(zipCodeTextBox.textProperty().isEmpty())
+        );
+    }
+    
+    public void setDefaults(Stage stage){
+        mainstage = stage;
         populateLastNameComboBox();
         populatePreFixComboBox();
         populateStateComboBox();
@@ -164,6 +191,7 @@ public class MainWindowSceneController implements Initializable {
     private void loadContactCard(int partyID) {
         partyModel item = SQLparty.getPartydetails(partyID);
                 
+        setCardDisabled(false);
         this.partyID = partyID;
         prefixComboBox.setValue(item.getPrefix());
         firstNameTextBox.setText(item.getFirstName());
@@ -172,7 +200,6 @@ public class MainWindowSceneController implements Initializable {
         suffixTextBox.setText(item.getSuffix());
         nameTitleTextBox.setText(item.getNameTitle());
         jobTitleTextBox.setText(item.getJobTitle());
-        orgCheckBox.setSelected(false);
         companyTextBox.setText(item.getCompanyName());
         address1TextBox.setText(item.getAddress1());
         address2TextBox.setText(item.getAddress2());
@@ -180,36 +207,42 @@ public class MainWindowSceneController implements Initializable {
         cityTextBox.setText(item.getCity());
         statesComboBox.setValue(item.getState());
         zipCodeTextBox.setText(item.getZip());
-        phone1TextBox.setText(item.getPhoneOne());
-        phone2TextBox.setText(item.getPhoneTwo());
+        phone1TextBox.setText(
+                StringUtilities.convertStringToPhoneNumber(
+                        ((item.getPhoneOne() == null) ? "" : item.getPhoneOne())
+                ));
+        phone2TextBox.setText(
+                StringUtilities.convertStringToPhoneNumber(
+                        ((item.getPhoneTwo() == null) ? "" : item.getPhoneTwo())
+                ));
         emailTextBox.setText(item.getEmailAddress());
     }
     
     private void saveContactCard(){
         partyModel item = new partyModel();
         
-        item.setPrefix(prefixComboBox.getValue().trim());
-        item.setFirstName(firstNameTextBox.getText().trim());
-        item.setMiddleInitial(miTextBox.getText().trim());
-        item.setLastName(lastNameTextBox.getText().trim());
-        item.setSuffix(suffixTextBox.getText().trim());
-        item.setNameTitle(nameTitleTextBox.getText().trim());
-        item.setJobTitle(jobTitleTextBox.getText().trim());
-//        orgCheckBox.isSelected();
-        item.setCompanyName(companyTextBox.getText().trim());
-        item.setAddress1(address1TextBox.getText().trim());
-        item.setAddress2(address2TextBox.getText().trim());
-        item.setAddress3(address3TextBox.getText().trim());
-        item.setCity(cityTextBox.getText().trim());
-        item.setState(statesComboBox.getValue().trim());
-        item.setZip(zipCodeTextBox.getText().trim());
-        item.setPhoneOne(phone1TextBox.getText().trim());
-        item.setPhoneTwo(phone2TextBox.getText().trim());
-        item.setEmailAddress(emailTextBox.getText().trim());
+        item.setPartyID(partyID);
+        item.setPrefix(((prefixComboBox.getValue() == null) ? "" : prefixComboBox.getValue().trim()));
+        item.setFirstName(((firstNameTextBox.getText() == null) ? "" : firstNameTextBox.getText().trim()));
+        item.setMiddleInitial(((miTextBox.getText() == null) ? "" : miTextBox.getText().trim()));
+        item.setLastName(((lastNameTextBox.getText() == null) ? "" : lastNameTextBox.getText().trim()));
+        item.setSuffix(((suffixTextBox.getText() == null) ? "" : suffixTextBox.getText().trim()));
+        item.setNameTitle(((nameTitleTextBox.getText() == null) ? "" : nameTitleTextBox.getText().trim()));
+        item.setJobTitle(((jobTitleTextBox.getText() == null) ? "" : jobTitleTextBox.getText().trim()));
+        item.setCompanyName(((companyTextBox.getText() == null) ? "" : companyTextBox.getText().trim()));
+        item.setAddress1(((address1TextBox.getText() == null) ? "" : address1TextBox.getText().trim()));
+        item.setAddress2(((address2TextBox.getText() == null) ? "" : address2TextBox.getText().trim()));
+        item.setAddress3(((address3TextBox.getText() == null) ? "" : address3TextBox.getText().trim()));
+        item.setCity(((cityTextBox.getText() == null) ? "" : cityTextBox.getText().trim()));
+        item.setState(((statesComboBox.getValue() == null) ? "" : statesComboBox.getValue().trim()));
+        item.setZip(((zipCodeTextBox.getText() == null) ? "" : zipCodeTextBox.getText().trim()));
+        item.setPhoneOne(StringUtilities.convertPhoneNumberToString(phone1TextBox.getText().trim()));
+        item.setPhoneTwo(StringUtilities.convertPhoneNumberToString(phone2TextBox.getText().trim()));
+        item.setEmailAddress(((emailTextBox.getText() == null) ? "" : emailTextBox.getText().trim()));
         
         // save information
         SQLparty.savePartyInformation(item);
-        clearContactCard();
+        search();
     }
     
     private void clearContactCard(){
@@ -221,7 +254,6 @@ public class MainWindowSceneController implements Initializable {
         suffixTextBox.setText("");
         nameTitleTextBox.setText("");
         jobTitleTextBox.setText("");
-        orgCheckBox.setSelected(false);
         companyTextBox.setText("");
         address1TextBox.setText("");
         address2TextBox.setText("");
@@ -232,6 +264,27 @@ public class MainWindowSceneController implements Initializable {
         phone1TextBox.setText("");
         phone2TextBox.setText("");
         emailTextBox.setText("");
+        setCardDisabled(true);
+    }
+    
+    private void setCardDisabled(boolean disabled){
+        prefixComboBox.setDisable(disabled);
+        firstNameTextBox.setDisable(disabled);
+        miTextBox.setDisable(disabled);
+        lastNameTextBox.setDisable(disabled);
+        suffixTextBox.setDisable(disabled);
+        nameTitleTextBox.setDisable(disabled);
+        jobTitleTextBox.setDisable(disabled);
+        companyTextBox.setDisable(disabled);
+        address1TextBox.setDisable(disabled);
+        address2TextBox.setDisable(disabled);
+        address3TextBox.setDisable(disabled);
+        cityTextBox.setDisable(disabled);
+        statesComboBox.setDisable(disabled);
+        zipCodeTextBox.setDisable(disabled);
+        phone1TextBox.setDisable(disabled);
+        phone2TextBox.setDisable(disabled);
+        emailTextBox.setDisable(disabled);
     }
         
 }
