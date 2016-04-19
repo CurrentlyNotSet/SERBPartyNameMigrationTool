@@ -20,7 +20,6 @@ public class partyModel {
     private String nameTitle;
     private String jobTitle;
     private String companyName;
-    private int companyFlag;
     private String address1;
     private String address2;
     private String address3;
@@ -102,14 +101,6 @@ public class partyModel {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
-    }
-
-    public int getCompanyFlag() {
-        return companyFlag;
-    }
-
-    public void setCompanyFlag(int companyFlag) {
-        this.companyFlag = companyFlag;
     }
 
     public String getAddress1() {

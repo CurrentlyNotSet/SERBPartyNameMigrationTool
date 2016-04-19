@@ -121,10 +121,13 @@ public class SQLparty {
                     + "Address1 = ?, "      //09
                     + "Address2 = ?, "      //10
                     + "Address3 = ?, "      //11
-                    + "phone1 = ?, "        //12
-                    + "phone2 = ?, "        //13
-                    + "emailAddress = ?  "  //14
-                    + "WHERE id = ?";       //15
+                    + "city = ?, "          //12
+                    + "stateCode = ?, "     //13
+                    + "zipCode = ?, "       //14
+                    + "phone1 = ?, "        //15
+                    + "phone2 = ?, "        //16
+                    + "emailAddress = ?  "  //17
+                    + "WHERE id = ?";       //18
             ps = conn.prepareStatement(sql);
             ps.setString( 1, item.getPrefix());
             ps.setString( 2, item.getFirstName());
@@ -137,10 +140,13 @@ public class SQLparty {
             ps.setString( 9, item.getAddress1());
             ps.setString(10, item.getAddress2());
             ps.setString(11, item.getAddress3());
-            ps.setString(12, item.getPhoneOne());
-            ps.setString(13, item.getPhoneTwo());
-            ps.setString(14, item.getEmailAddress());
-            ps.setInt   (15, item.getPartyID());
+            ps.setString(12, item.getCity());
+            ps.setString(13, item.getState());
+            ps.setString(14, item.getZip());
+            ps.setString(15, item.getPhoneOne());
+            ps.setString(16, item.getPhoneTwo());
+            ps.setString(17, item.getEmailAddress());
+            ps.setInt   (18, item.getPartyID());
             ps.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
