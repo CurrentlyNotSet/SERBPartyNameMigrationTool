@@ -199,20 +199,20 @@ public class MainWindowSceneController implements Initializable {
                 
         setCardDisabled(false);
         this.partyID = partyID;
-        prefixComboBox.setValue(item.getPrefix());
-        firstNameTextBox.setText(item.getFirstName());
-        miTextBox.setText(item.getMiddleInitial());
-        lastNameTextBox.setText(item.getLastName());
-        suffixTextBox.setText(item.getSuffix());
-        nameTitleTextBox.setText(item.getNameTitle());
-        jobTitleTextBox.setText(item.getJobTitle());
-        companyTextBox.setText(item.getCompanyName());
-        address1TextBox.setText(item.getAddress1());
-        address2TextBox.setText(item.getAddress2());
-        address3TextBox.setText(item.getAddress3());
-        cityTextBox.setText(item.getCity());
-        statesComboBox.setValue(item.getState());
-        zipCodeTextBox.setText(item.getZip());
+        prefixComboBox.setValue(item.getPrefix() == null     ? "" : item.getPrefix().trim());
+        firstNameTextBox.setText(item.getFirstName() == null ? "" : item.getFirstName().trim());
+        miTextBox.setText(item.getMiddleInitial() == null    ? "" : item.getMiddleInitial().trim());
+        lastNameTextBox.setText(item.getLastName() == null   ? "" : item.getLastName().trim());
+        suffixTextBox.setText(item.getSuffix() == null       ? "" : item.getSuffix().trim());
+        nameTitleTextBox.setText(item.getNameTitle() == null ? "" : item.getNameTitle().trim());
+        jobTitleTextBox.setText(item.getJobTitle() == null   ? "" : item.getJobTitle().trim());
+        companyTextBox.setText(item.getCompanyName() == null ? "" : item.getCompanyName().trim());
+        address1TextBox.setText(item.getAddress1() == null   ? "" : item.getAddress1().trim());
+        address2TextBox.setText(item.getAddress2() == null   ? "" : item.getAddress2().trim());
+        address3TextBox.setText(item.getAddress3() == null   ? "" : item.getAddress3().trim());
+        cityTextBox.setText(item.getCity() == null           ? "" : item.getCity().trim());
+        statesComboBox.setValue(item.getState() == null      ? "" : item.getState().trim());
+        zipCodeTextBox.setText(item.getZip() == null         ? "" : item.getZip().trim());
         phone1TextBox.setText(
                 StringUtilities.convertStringToPhoneNumber(
                         ((item.getPhoneOne() == null) ? "" : item.getPhoneOne())
@@ -228,23 +228,40 @@ public class MainWindowSceneController implements Initializable {
         partyModel item = new partyModel();
         
         item.setPartyID(partyID);
-        item.setPrefix((prefixComboBox.getValue() == null) ? null : prefixComboBox.getValue().trim());
-        item.setFirstName("".equals(firstNameTextBox.getText().trim()) ? null : firstNameTextBox.getText().trim());
-        item.setMiddleInitial("".equals(miTextBox.getText().trim()) ? null : miTextBox.getText().trim());
-        item.setLastName("".equals(lastNameTextBox.getText().trim()) ? null : lastNameTextBox.getText().trim());
-        item.setSuffix("".equals(suffixTextBox.getText().trim()) ? null : suffixTextBox.getText().trim());
-        item.setNameTitle("".equals(nameTitleTextBox.getText().trim()) ? null : nameTitleTextBox.getText().trim());
-        item.setJobTitle("".equals(jobTitleTextBox.getText().trim()) ? null : jobTitleTextBox.getText().trim());
-        item.setCompanyName("".equals(companyTextBox.getText().trim()) ? null : companyTextBox.getText().trim());
-        item.setAddress1("".equals(address1TextBox.getText().trim()) ? null : address1TextBox.getText().trim());
-        item.setAddress2("".equals(address2TextBox.getText().trim()) ? null : address2TextBox.getText().trim());
-        item.setAddress3("".equals(address3TextBox.getText().trim()) ? null : address3TextBox.getText().trim());
-        item.setCity("".equals(cityTextBox.getText().trim()) ? null : cityTextBox.getText().trim());
-        item.setState(statesComboBox.getValue() == null ? null : statesComboBox.getValue().trim());
-        item.setZip("".equals(zipCodeTextBox.getText().trim()) ? null : zipCodeTextBox.getText().trim());
+        item.setPrefix("".equals(prefixComboBox.getValue().trim())      ? null : prefixComboBox.getValue().trim());
+        item.setFirstName("".equals(firstNameTextBox.getText().trim())  ? null : firstNameTextBox.getText().trim());
+        item.setMiddleInitial("".equals(miTextBox.getText().trim())     ? null : miTextBox.getText().trim());
+        item.setLastName("".equals(lastNameTextBox.getText().trim())    ? null : lastNameTextBox.getText().trim());
+        item.setSuffix("".equals(suffixTextBox.getText().trim())        ? null : suffixTextBox.getText().trim());
+        item.setNameTitle("".equals(nameTitleTextBox.getText().trim())  ? null : nameTitleTextBox.getText().trim());
+        item.setJobTitle("".equals(jobTitleTextBox.getText().trim())    ? null : jobTitleTextBox.getText().trim());
+        item.setCompanyName("".equals(companyTextBox.getText().trim())  ? null : companyTextBox.getText().trim());
+        item.setAddress1("".equals(address1TextBox.getText().trim())    ? null : address1TextBox.getText().trim());
+        item.setAddress2("".equals(address2TextBox.getText().trim())    ? null : address2TextBox.getText().trim());
+        item.setAddress3("".equals(address3TextBox.getText().trim())    ? null : address3TextBox.getText().trim());
+        item.setCity("".equals(cityTextBox.getText().trim())            ? null : cityTextBox.getText().trim());
+        item.setState(statesComboBox.getValue() == null                 ? null : statesComboBox.getValue().trim());
+        item.setZip("".equals(zipCodeTextBox.getText().trim())          ? null : zipCodeTextBox.getText().trim());        
         item.setPhoneOne(StringUtilities.convertPhoneNumberToString(phone1TextBox.getText().trim()));
         item.setPhoneTwo(StringUtilities.convertPhoneNumberToString(phone2TextBox.getText().trim()));
-        item.setEmailAddress("".equals(emailTextBox.getText()) ? null : emailTextBox.getText().trim());
+        
+        if (item.getPrefix() != null) {
+            item.setPrefix("".equals(item.getPrefix().trim()) 
+                    ? null : item.getPrefix().trim());
+        }
+        if (item.getPhoneTwo() != null) {
+            item.setPhoneTwo("".equals(item.getPhoneTwo().trim()) 
+                    ? null : item.getPhoneTwo().trim());
+        }
+        
+        if (item.getPhoneOne() != null) {
+            item.setPhoneOne("".equals(item.getPhoneOne().trim()) 
+                    ? null : item.getPhoneOne().trim());
+        }
+        if (item.getPhoneTwo() != null) {
+            item.setPhoneTwo("".equals(item.getPhoneTwo().trim()) 
+                    ? null : item.getPhoneTwo().trim());
+        }
         
         // save information
         SQLparty.savePartyInformation(item);

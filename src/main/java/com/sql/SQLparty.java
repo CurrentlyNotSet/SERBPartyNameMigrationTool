@@ -76,6 +76,7 @@ public class SQLparty {
     }
     
     public static partyModel getPartydetails(int partyID) {
+        System.out.println("PartyID: " + partyID);
         partyModel item = new partyModel();
         Connection conn = null;
         PreparedStatement ps = null;
