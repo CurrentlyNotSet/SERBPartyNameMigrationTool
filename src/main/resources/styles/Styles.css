@@ -57,7 +57,7 @@
 }
 
 .table-view .column .label {
-    -fx-font-size: 14pt;
+    -fx-font-size: 9pt;
     -fx-font-family: "Segoe UI Light";
     -fx-text-fill: white;
     -fx-alignment: center;
@@ -65,7 +65,7 @@
 }
 
 .table-view .table-cell{
-    -fx-font-size: 11pt;
+    -fx-font-size: 9pt;
 }
 
 .table-view:focused .table-row-cell:filled:focused:selected {

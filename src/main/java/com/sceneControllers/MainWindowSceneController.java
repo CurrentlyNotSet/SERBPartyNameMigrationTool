@@ -12,12 +12,17 @@ import com.sql.SQLparty;
 import com.util.Global;
 import com.util.StringUtilities;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -36,7 +41,7 @@ public class MainWindowSceneController implements Initializable {
     private int partyID;
     
     @FXML
-    private ComboBox<String> startsWithComboBox;
+    private Label recordCountLabel;
     @FXML
     private ComboBox<String> prefixComboBox;
     @FXML
@@ -73,6 +78,8 @@ public class MainWindowSceneController implements Initializable {
     private TextField emailTextBox;
     @FXML
     private Button saveButton;
+    @FXML
+    private Button deleteButton;
     @FXML
     private Button cancelButton;
     @FXML
@@ -121,18 +128,12 @@ public class MainWindowSceneController implements Initializable {
     
     public void setDefaults(Stage stage){
         mainstage = stage;
-        populateLastNameComboBox();
         populatePreFixComboBox();
         populateStateComboBox();
         setTableSizes();
         search();
     }
-    
-    private void populateLastNameComboBox() {
-        startsWithComboBox.getItems().clear();
-        startsWithComboBox.getItems().addAll(Global.getAlphabet());
-        startsWithComboBox.setValue("A");
-    }
+
     
     private void populateStateComboBox() {
         statesComboBox.getItems().clear();
@@ -162,6 +163,11 @@ public class MainWindowSceneController implements Initializable {
     }
     
     @FXML
+    private void deleteButton(){
+        deleteContact();
+    }
+    
+    @FXML
     private void cancelButton(){
         loadContactCard(partyID);
     }
@@ -169,14 +175,14 @@ public class MainWindowSceneController implements Initializable {
     @FXML
     private void search(){
         clearContactCard();
-        String searchParam = startsWithComboBox.getValue() + "%";
-        ObservableList<partyNameTableModel> list = SQLparty.getContactList(searchParam);
+        ObservableList<partyNameTableModel> list = SQLparty.getContactList();
         loadTable(list);
     }
     
     private void loadTable(ObservableList<partyNameTableModel> list) {
         searchTable.getItems().removeAll();
         searchTable.setItems(list);
+        recordCountLabel.setText("Record Count: " + Global.getRecordCount());
     }
     
     @FXML
@@ -222,27 +228,42 @@ public class MainWindowSceneController implements Initializable {
         partyModel item = new partyModel();
         
         item.setPartyID(partyID);
-        item.setPrefix(((prefixComboBox.getValue() == null) ? "" : prefixComboBox.getValue().trim()));
-        item.setFirstName(((firstNameTextBox.getText() == null) ? "" : firstNameTextBox.getText().trim()));
-        item.setMiddleInitial(((miTextBox.getText() == null) ? "" : miTextBox.getText().trim()));
-        item.setLastName(((lastNameTextBox.getText() == null) ? "" : lastNameTextBox.getText().trim()));
-        item.setSuffix(((suffixTextBox.getText() == null) ? "" : suffixTextBox.getText().trim()));
-        item.setNameTitle(((nameTitleTextBox.getText() == null) ? "" : nameTitleTextBox.getText().trim()));
-        item.setJobTitle(((jobTitleTextBox.getText() == null) ? "" : jobTitleTextBox.getText().trim()));
-        item.setCompanyName(((companyTextBox.getText() == null) ? "" : companyTextBox.getText().trim()));
-        item.setAddress1(((address1TextBox.getText() == null) ? "" : address1TextBox.getText().trim()));
-        item.setAddress2(((address2TextBox.getText() == null) ? "" : address2TextBox.getText().trim()));
-        item.setAddress3(((address3TextBox.getText() == null) ? "" : address3TextBox.getText().trim()));
-        item.setCity(((cityTextBox.getText() == null) ? "" : cityTextBox.getText().trim()));
-        item.setState(((statesComboBox.getValue() == null) ? "" : statesComboBox.getValue().trim()));
-        item.setZip(((zipCodeTextBox.getText() == null) ? "" : zipCodeTextBox.getText().trim()));
+        item.setPrefix((prefixComboBox.getValue() == null) ? null : prefixComboBox.getValue().trim());
+        item.setFirstName("".equals(firstNameTextBox.getText().trim()) ? null : firstNameTextBox.getText().trim());
+        item.setMiddleInitial("".equals(miTextBox.getText().trim()) ? null : miTextBox.getText().trim());
+        item.setLastName("".equals(lastNameTextBox.getText().trim()) ? null : lastNameTextBox.getText().trim());
+        item.setSuffix("".equals(suffixTextBox.getText().trim()) ? null : suffixTextBox.getText().trim());
+        item.setNameTitle("".equals(nameTitleTextBox.getText().trim()) ? null : nameTitleTextBox.getText().trim());
+        item.setJobTitle("".equals(jobTitleTextBox.getText().trim()) ? null : jobTitleTextBox.getText().trim());
+        item.setCompanyName("".equals(companyTextBox.getText().trim()) ? null : companyTextBox.getText().trim());
+        item.setAddress1("".equals(address1TextBox.getText().trim()) ? null : address1TextBox.getText().trim());
+        item.setAddress2("".equals(address2TextBox.getText().trim()) ? null : address2TextBox.getText().trim());
+        item.setAddress3("".equals(address3TextBox.getText().trim()) ? null : address3TextBox.getText().trim());
+        item.setCity("".equals(cityTextBox.getText().trim()) ? null : cityTextBox.getText().trim());
+        item.setState(statesComboBox.getValue() == null ? null : statesComboBox.getValue().trim());
+        item.setZip("".equals(zipCodeTextBox.getText().trim()) ? null : zipCodeTextBox.getText().trim());
         item.setPhoneOne(StringUtilities.convertPhoneNumberToString(phone1TextBox.getText().trim()));
         item.setPhoneTwo(StringUtilities.convertPhoneNumberToString(phone2TextBox.getText().trim()));
-        item.setEmailAddress(((emailTextBox.getText() == null) ? "" : emailTextBox.getText().trim()));
+        item.setEmailAddress("".equals(emailTextBox.getText()) ? null : emailTextBox.getText().trim());
         
         // save information
         SQLparty.savePartyInformation(item);
         search();
+    }
+    
+    private void deleteContact() {
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Deletion");
+        alert.setHeaderText("Deletion Confirmation");
+        alert.setContentText("Are you sure you wish to remove this entry from the database?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            SQLparty.deleteContact(partyID);
+            search();
+        } else {
+            alert.close();
+        }
     }
     
     private void clearContactCard(){
@@ -285,6 +306,8 @@ public class MainWindowSceneController implements Initializable {
         phone1TextBox.setDisable(disabled);
         phone2TextBox.setDisable(disabled);
         emailTextBox.setDisable(disabled);
+        deleteButton.setDisable(disabled);
+        cancelButton.setDisable(disabled);
     }
         
 }

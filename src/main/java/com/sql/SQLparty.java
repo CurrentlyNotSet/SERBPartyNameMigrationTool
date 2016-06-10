@@ -7,7 +7,7 @@ package com.sql;
 
 import com.model.partyModel;
 import com.model.partyNameTableModel;
-import com.util.StringUtilities;
+import com.util.Global;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,32 +22,47 @@ import org.apache.commons.dbutils.DbUtils;
  */
 public class SQLparty {
     
-    public static ObservableList<partyNameTableModel> getContactList(String startsWith){
+    public static ObservableList<partyNameTableModel> getContactList() {
+        Global.setRecordCount(0);
         ObservableList<partyNameTableModel> list = FXCollections.observableArrayList();
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
             conn = DBConnection.connectToDB();
-            String sql = "SELECT id, prefix, firstName, middleInitial, lastName, suffix "
-                    + "FROM Party WHERE "
-                    + "(firstName = '' OR firstName IS NULL) AND "
-                    + "(middleInitial = '' OR middleInitial IS NULL) AND "
-                    + "lastName LIKE ?";
+            String sql = "SELECT id, companyName FROM party WHERE active = 1 "
+                    + "AND firstName IS NULL AND lastName IS NULL AND companyName IS NOT NULL "
+                    + "AND companyName NOT LIKE '%union%'   AND companyName NOT LIKE '%cincinnati%' "
+                    + "AND companyName NOT LIKE '%test%'    AND companyName NOT LIKE '%Village%' "
+                    + "AND companyName NOT LIKE '%IBT%'     AND companyName NOT LIKE '%employee%' "
+                    + "AND companyName NOT LIKE '%UAW%'     AND companyName NOT LIKE '%OAPSE%' "
+                    + "AND companyName NOT LIKE '%park%'    AND companyName NOT LIKE '%nursing%' "
+                    + "AND companyName NOT LIKE '%Asso%'    AND companyName NOT LIKE '%organization%' "
+                    + "AND companyName NOT LIKE '%police%'  AND companyName NOT LIKE '%Assn%'"
+                    + "AND companyName NOT LIKE '%fop%'     AND companyName NOT LIKE '%lodge%' "
+                    + "AND companyName NOT LIKE '%local%'   AND companyName NOT LIKE '%labor%' "
+                    + "AND companyName NOT LIKE '%county%'  AND companyName NOT LIKE '%Education%' "
+                    + "AND companyName NOT LIKE '%college%' AND companyName NOT LIKE '%Authority%' "
+                    + "AND companyName NOT LIKE '%Ohio%'    AND companyName NOT LIKE '%City%' "
+                    + "AND companyName NOT LIKE '%worker%'  AND companyName NOT LIKE '%cleveland%' "
+                    + "AND companyName NOT LIKE '%library%' AND companyName NOT LIKE '%teacher%' "
+                    + "AND companyName NOT LIKE '%council%' AND companyName NOT LIKE '%health%' "
+                    + "AND companyName NOT LIKE '%team%'    AND companyName NOT LIKE '%AFSCME%' "
+                    + "AND companyName NOT LIKE '%school%'  AND companyName NOT LIKE '%sanitary%' "
+                    + "AND companyName NOT LIKE '%Dayton%'  AND companyName NOT LIKE '%metro%' "
+                    + "AND companyName NOT LIKE '%fire%'    AND companyName NOT LIKE '%career%' "
+                    + "AND companyName NOT LIKE '%OPBA%'    AND companyName NOT LIKE '%residential%' "
+                    + "AND companyName NOT LIKE '%SEIU%'    AND companyName NOT LIKE '%University%' "
+                    + "AND companyName NOT LIKE '%Toledo%'  AND companyName NOT LIKE '%watershed%' "
+                    + "AND companyName NOT LIKE '%Waste%'   AND companyName NOT LIKE '%Living Center%' "
+                    + "AND companyName NOT LIKE '%Job%'     ORDER BY companyName";
             ps = conn.prepareStatement(sql);
-            ps.setString(1, startsWith);
             rs = ps.executeQuery();
             while (rs.next()) {
-                partyModel name = new partyModel();
-                name.setPrefix(rs.getString("prefix"));
-                name.setFirstName(rs.getString("firstName"));
-                name.setMiddleInitial(rs.getString("middleInitial"));
-                name.setLastName(rs.getString("lastName"));
-                name.setSuffix(rs.getString("suffix"));
-                
+                Global.setRecordCount(Global.getRecordCount() + 1);
                 list.add(new partyNameTableModel(
                         rs.getString("id"),
-                        StringUtilities.fullName(name)
+                        rs.getString("companyName")
                 ));
            }  
         } catch (SQLException ex) {
@@ -60,7 +75,7 @@ public class SQLparty {
         return list;
     }
     
-    public static partyModel getPartydetails(int partyID){
+    public static partyModel getPartydetails(int partyID) {
         partyModel item = new partyModel();
         Connection conn = null;
         PreparedStatement ps = null;
@@ -103,7 +118,7 @@ public class SQLparty {
         return item;
     }
     
-    public static void savePartyInformation(partyModel item){
+    public static void savePartyInformation(partyModel item) {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -156,4 +171,22 @@ public class SQLparty {
             DbUtils.closeQuietly(conn);
         }
     }
+    
+    public static void deleteContact(int partyID){
+        Connection conn = null;
+        PreparedStatement ps = null;
+        try {
+            conn = DBConnection.connectToDB();
+            String sql = "UPDATE party SET Active = 0 WHERE id = ?";
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, partyID);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            DbUtils.closeQuietly(ps);
+            DbUtils.closeQuietly(conn);
+        }
+    }
+    
 }

@@ -13,22 +13,6 @@ import com.model.partyModel;
  */
 public class StringUtilities {
     
-    public static String fullName(partyModel item) {
-        String name = "";
-        name += ((item.getPrefix() == null || "".equals(item.getPrefix())) 
-                ? "" : item.getPrefix() + " ");
-        name += ((item.getFirstName()== null || "".equals(item.getFirstName())) 
-                ? "" : item.getFirstName() + " ");
-        name += ((item.getMiddleInitial() == null || "".equals(item.getMiddleInitial())) 
-                ? "" : item.getMiddleInitial() +  ". ");
-        name += ((item.getLastName() == null) 
-                ? "" : item.getLastName());
-        name += ((item.getSuffix() == null || "".equals(item.getSuffix())) 
-                ? "" : " " + item.getSuffix());
-        
-        return name.trim();
-    }
-    
     public static String convertStringToPhoneNumber(String number) {
         String formattedNumber = "";
         if (number.length() >= 6){
