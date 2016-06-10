@@ -28,6 +28,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import org.controlsfx.validation.ValidationSupport;
+import org.controlsfx.validation.Validator;
 
 /**
  * FXML Controller class
@@ -124,6 +126,14 @@ public class MainWindowSceneController implements Initializable {
                 .or(statesComboBox.valueProperty().isNull())
                 .or(zipCodeTextBox.textProperty().isEmpty())
         );
+        
+        ValidationSupport validationSupport = new ValidationSupport();
+        validationSupport.registerValidator(firstNameTextBox, Validator.createEmptyValidator("Text is required"));
+        validationSupport.registerValidator(lastNameTextBox, Validator.createEmptyValidator("Text is required"));
+        validationSupport.registerValidator(address1TextBox, Validator.createEmptyValidator("Text is required"));
+        validationSupport.registerValidator(cityTextBox, Validator.createEmptyValidator("Text is required"));
+        validationSupport.registerValidator(statesComboBox, Validator.createEmptyValidator("Text is required"));
+        validationSupport.registerValidator(zipCodeTextBox, Validator.createEmptyValidator("Text is required"));
     }
     
     public void setDefaults(Stage stage){
