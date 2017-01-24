@@ -34,7 +34,7 @@ public class SQLnamePrefix {
                list.add(rs.getString("prefix"));
            }  
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            System.err.println(ex.getMessage());
         } finally {
             DbUtils.closeQuietly(ps);
             DbUtils.closeQuietly(rs);

@@ -35,7 +35,7 @@ public class DBConnection {
                 }
                 try {
                     Thread.sleep(3000);
-                } catch (Exception exi) {
+                } catch (InterruptedException exi) {
                     System.err.println(exi.getMessage());
                 }
                 if (nbAttempts == 3) {

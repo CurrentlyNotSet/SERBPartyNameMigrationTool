@@ -5,8 +5,6 @@
  */
 package com.util;
 
-import com.model.partyModel;
-
 /**
  *
  * @author Andrew

@@ -66,7 +66,7 @@ public class SQLparty {
                 ));
            }  
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            System.err.println(ex.getMessage());
         } finally {
             DbUtils.closeQuietly(ps);
             DbUtils.closeQuietly(rs);
@@ -110,7 +110,7 @@ public class SQLparty {
                 item = null;
             }
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            System.err.println(ex.getMessage());
         } finally {
             DbUtils.closeQuietly(ps);
             DbUtils.closeQuietly(rs);
@@ -165,7 +165,7 @@ public class SQLparty {
             ps.setInt   (18, item.getPartyID());
             ps.executeUpdate();
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            System.err.println(ex.getMessage());
         } finally {
             DbUtils.closeQuietly(ps);
             DbUtils.closeQuietly(rs);
@@ -183,7 +183,7 @@ public class SQLparty {
             ps.setInt(1, partyID);
             ps.executeUpdate();
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            System.err.println(ex.getMessage());
         } finally {
             DbUtils.closeQuietly(ps);
             DbUtils.closeQuietly(conn);
