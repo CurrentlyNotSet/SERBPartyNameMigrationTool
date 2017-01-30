@@ -15,6 +15,13 @@ import javafx.stage.StageStyle;
  */
 public class AlertDialog {
 
+    /**
+     * Shows upto 4 different static alert windows.
+     * @param type Integer (alert type)
+     * @param title String (title text)
+     * @param header String (header text)
+     * @param body String (body text message)
+     */
     public static void StaticAlert(int type, String title, String header, String body) {
         Alert alert = null;
         

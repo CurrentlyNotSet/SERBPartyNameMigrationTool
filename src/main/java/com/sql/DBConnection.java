@@ -17,6 +17,11 @@ import java.sql.SQLException;
  */
 public class DBConnection {
 
+    /**
+     * Connects to the database using a connection info provided in the 
+     * DBCInfo class file.
+     * @return Connection
+     */
     public static Connection connectToDB() {
         Connection conn = null;
         int nbAttempts = 0;

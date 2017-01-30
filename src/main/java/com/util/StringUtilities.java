@@ -11,16 +11,35 @@ package com.util;
  */
 public class StringUtilities {
     
+    /**
+     * Formats the phone number to a readable format.
+     * @param number String
+     * @return String
+     */
     public static String convertStringToPhoneNumber(String number) {
         String formattedNumber = "";
-        if (number.length() >= 6){
+        
+        if(number == null) {
+            formattedNumber = "";
+        } else if(number.length() >= 10) {
             formattedNumber += "(" + number.substring(0, 3) + ") ";
             formattedNumber += number.substring(3, 6) + "-";
-            formattedNumber += number.substring(6);
-        }
+            formattedNumber += number.substring(6, 10);
+            
+            if(number.length() > 10) {
+                formattedNumber += " x" + number.substring(10);
+            }
+        } else {
+            formattedNumber = number;
+        }        
         return formattedNumber;
     }
     
+    /**
+     * Strips non numeric characters from a string.
+     * @param number String
+     * @return String
+     */
     public static String convertPhoneNumberToString(String number) {
         return number.replaceAll("[^0-9]", "");
     }

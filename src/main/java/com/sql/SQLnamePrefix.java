@@ -19,6 +19,10 @@ import org.apache.commons.dbutils.DbUtils;
  */
 public class SQLnamePrefix {
     
+    /**
+     * Gets the salutation/name prefix list from the database.
+     * @return List
+     */
     public static List getSalutationList(){
         List<String> list = new ArrayList<>();
         Connection conn = null;

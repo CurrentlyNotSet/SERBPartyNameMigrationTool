@@ -101,10 +101,46 @@ public class MainWindowSceneController implements Initializable {
         mainstage.setY(event.getScreenY() + Y);
     }
     
+    @FXML
+    private void MenuExit() {
+        System.exit(0);
+    }
+    
+    @FXML
+    private void saveButton(){
+        saveContactCard();
+    }
+    
+    @FXML
+    private void deleteButton(){
+        deleteContact();
+    }
+    
+    @FXML
+    private void cancelButton(){
+        loadContactCard(partyID);
+    }
+    
+    @FXML
+    private void search(){
+        clearContactCard();
+        ObservableList<partyNameTableModel> list = SQLparty.getContactList();
+        loadTable(list);
+    }
+    
+    @FXML
+    private void tableListener(MouseEvent event) {
+        partyNameTableModel row = searchTable.getSelectionModel().getSelectedItem();
+        
+        if (row != null && event.getClickCount() >= 1) {
+            loadContactCard(Integer.parseInt(row.getID().getValue()));
+        }
+    }
+    
     /**
      * Initializes the controller class.
-     * @param url
-     * @param rb
+     * @param url URL
+     * @param rb ResourceBundle
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -162,48 +198,12 @@ public class MainWindowSceneController implements Initializable {
         iDColumn.setVisible(false);
     }
     
-    @FXML
-    private void MenuExit() {
-        System.exit(0);
-    }
-    
-    @FXML
-    private void saveButton(){
-        saveContactCard();
-    }
-    
-    @FXML
-    private void deleteButton(){
-        deleteContact();
-    }
-    
-    @FXML
-    private void cancelButton(){
-        loadContactCard(partyID);
-    }
-    
-    @FXML
-    private void search(){
-        clearContactCard();
-        ObservableList<partyNameTableModel> list = SQLparty.getContactList();
-        loadTable(list);
-    }
-    
     private void loadTable(ObservableList<partyNameTableModel> list) {
         searchTable.getItems().removeAll();
         searchTable.setItems(list);
         recordCountLabel.setText("Record Count: " + Global.getRecordCount());
     }
     
-    @FXML
-    private void tableListener(MouseEvent event) {
-        partyNameTableModel row = searchTable.getSelectionModel().getSelectedItem();
-        
-        if (row != null && event.getClickCount() >= 1) {
-            loadContactCard(Integer.parseInt(row.getID().getValue()));
-        }
-    }
-  
     private void loadContactCard(int partyID) {
         partyModel item = SQLparty.getPartydetails(partyID);
                 

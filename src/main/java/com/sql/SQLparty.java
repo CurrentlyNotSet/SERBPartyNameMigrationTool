@@ -22,8 +22,11 @@ import org.apache.commons.dbutils.DbUtils;
  */
 public class SQLparty {
     
+    /**
+     * Gathers contact list for display in the JavaFX table.
+     * @return ObservableList
+     */
     public static ObservableList<partyNameTableModel> getContactList() {
-        Global.setRecordCount(0);
         ObservableList<partyNameTableModel> list = FXCollections.observableArrayList();
         Connection conn = null;
         PreparedStatement ps = null;
@@ -59,12 +62,12 @@ public class SQLparty {
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
             while (rs.next()) {
-                Global.setRecordCount(Global.getRecordCount() + 1);
                 list.add(new partyNameTableModel(
                         rs.getString("id"),
                         rs.getString("companyName")
                 ));
            }  
+            Global.setRecordCount(list.size());
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         } finally {
@@ -75,6 +78,11 @@ public class SQLparty {
         return list;
     }
     
+    /**
+     * Gathers all of the details for a specific party.
+     * @param partyID Integer
+     * @return partyModel
+     */
     public static partyModel getPartydetails(int partyID) {
         System.out.println("PartyID: " + partyID);
         partyModel item = new partyModel();
@@ -119,6 +127,10 @@ public class SQLparty {
         return item;
     }
     
+    /**
+     * Saves the party information to the database
+     * @param item partyModel
+     */
     public static void savePartyInformation(partyModel item) {
         Connection conn = null;
         PreparedStatement ps = null;
@@ -173,6 +185,10 @@ public class SQLparty {
         }
     }
     
+    /**
+     * Marks the contact inactive in the database.
+     * @param partyID Integer
+     */
     public static void deleteContact(int partyID){
         Connection conn = null;
         PreparedStatement ps = null;

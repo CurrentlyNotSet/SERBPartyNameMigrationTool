@@ -20,14 +20,26 @@ public class Global {
         "ND", "MP", "OH", "OK", "OR", "PW", "PA", "PR", "RI", "SC", "SD", 
         "TN", "TX", "UM", "UT", "VT", "VA", "VI", "WA", "WV","WI", "WY"};
 
+    /**
+     * Gets record count from how many persons are loaded into the table
+     * @return Integer
+     */
     public static int getRecordCount() {
         return recordCount;
     }
 
+    /**
+     * Sets record count from how many persons are loaded into the table
+     * @param recordCount Integer
+     */
     public static void setRecordCount(int recordCount) {
         Global.recordCount = recordCount;
     }
 
+    /**
+     * Gets a list of all of the 2 character postal codes for all 50 states
+     * @return String[]
+     */
     public static String[] getStates() {
         return states;
     }
