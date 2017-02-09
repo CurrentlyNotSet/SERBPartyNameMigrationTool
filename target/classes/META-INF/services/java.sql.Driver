@@ -1,1 +1,1 @@
-net.sourceforge.jtds.jdbc.Driver
+com.microsoft.sqlserver.jdbc.SQLServerDriver
